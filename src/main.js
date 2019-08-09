@@ -1,3 +1,4 @@
+'use strict';
 const templates = {
   menu: `<section class="control__btn-wrap">
     <input
@@ -184,24 +185,18 @@ const templates = {
           </div>`,
   button: `<button class="load-more" type="button">load more</button>`};
 
-
-const getTemplate = (template) => { return template };
-const render = (block, template, position = 'afterend') => {
-  const element =  document.querySelector(block);
+const render = (block, template, position = `afterend`) => {
+  const element = document.querySelector(block);
   element.insertAdjacentHTML(position, template);
 };
 
-render('.control__title', templates.menu);
-render('.main__control', templates.search);
-render('.main__search', templates.filter);
-render('.main__filter', templates.boardContainer);
-render('.board', templates.boardFilter, 'beforeend');
-render('.board', templates.board, 'beforeend');
-render('.board__tasks', templates.card, 'beforeend');
-render('.board__tasks', templates.card, 'beforeend');
-render('.board__tasks', templates.card, 'beforeend');
-render('.board__tasks', templates.button);
-
-
-
-
+render(`.control__title`, templates.menu);
+render(`.main__control`, templates.search);
+render(`.main__search`, templates.filter);
+render(`.main__filter`, templates.boardContainer);
+render(`.board`, templates.boardFilter, `beforeend`);
+render(`.board`, templates.board, `beforeend`);
+render(`.board__tasks`, templates.card, `beforeend`);
+render(`.board__tasks`, templates.card, `beforeend`);
+render(`.board__tasks`, templates.card, `beforeend`);
+render(`.board__tasks`, templates.button);
