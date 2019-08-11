@@ -1,6 +1,9 @@
 'use strict';
+const returnTemplate = (template) => {
+  return template;
+};
 const templates = {
-  menu: `<section class="control__btn-wrap">
+  menu: returnTemplate(`<section class="control__btn-wrap">
     <input
       type="radio"
       name="control"
@@ -27,8 +30,8 @@ const templates = {
     <label for="control__statistic" class="control__label"
       >STATISTICS</label
     >
-      </section>`,
-  search: `<section class="main__search search container">
+      </section>`),
+  search: returnTemplate(`<section class="main__search search container">
   <input
     type="text"
     id="search__input"
@@ -36,8 +39,8 @@ const templates = {
     placeholder="START TYPING — SEARCH BY WORD, #HASHTAG OR DATE"
   />
   <label class="visually-hidden" for="search__input">Search</label>
-</section>`,
-  filter: `      <section class="main__filter filter container">
+</section>`),
+  filter: returnTemplate(`<section class="main__filter filter container">
   <input
     type="radio"
     id="filter__all"
@@ -104,8 +107,8 @@ const templates = {
   <label for="filter__archive" class="filter__label"
     >Archive <span class="filter__archive-count">115</span></label
   >
-</section>`,
-  card: `<article class="card card--black">
+</section>`),
+  card: returnTemplate(`<article class="card card--black">
   <div class="card__form">
     <div class="card__inner">
       <div class="card__control">
@@ -169,21 +172,21 @@ const templates = {
       </div>
     </div>
   </div>
-</article>`,
-  boardContainer: `
+</article>`),
+  boardContainer: returnTemplate(`
   <section class="board container">
   </section>
-  `,
-  boardFilter: `
+  `),
+  boardFilter: returnTemplate(`
   <div class="board__filter-list">
           <a href="#" class="board__filter">SORT BY DEFAULT</a>
           <a href="#" class="board__filter">SORT BY DATE up</a>
           <a href="#" class="board__filter">SORT BY DATE down</a>
   </div>
-  `,
-  board: `<div class="board__tasks">
-          </div>`,
-  button: `<button class="load-more" type="button">load more</button>`};
+  `),
+  board: returnTemplate(`<div class="board__tasks">
+          </div>`),
+  button: returnTemplate(`<button class="load-more" type="button">load more</button>`)};
 
 const render = (block, template, position = `afterend`) => {
   const element = document.querySelector(block);
