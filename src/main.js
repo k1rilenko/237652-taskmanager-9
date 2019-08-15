@@ -19,7 +19,5 @@ render(`.board`, boardFilter(), `beforeend`);
 render(`.board`, boardTasks(), `beforeend`);
 for (let i = 0; i < 3; i++) {
   render(`.board__tasks`, card(), `beforeend`);
-  i++;
 }
-render(`.board__tasks`, card(), `beforeend`);
 render(`.board__tasks`, button());
