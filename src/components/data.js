@@ -10,7 +10,7 @@ export const task = {
     `theory`,
     `practice`,
     `intensive`,
-    `keks12212`
+    `keks1221wqweq2`
   ]),
   isRepeating: true,
   repeatingDays: {
