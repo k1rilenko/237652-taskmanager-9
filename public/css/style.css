@@ -459,7 +459,7 @@ body {
 }
 .card--edit .card__settings {
   margin-top: 0;
-  flex-direction: column;
+  flex-direction: column-reverse;
 }
 .card--edit .card__img-wrap {
   order: 1;
