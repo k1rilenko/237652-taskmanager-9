@@ -21,9 +21,20 @@ const renderTask = (taskMock) => {
       document.removeEventListener(`keydown`, onEscKeyDown);
     }
   };
+  const checkEmptyContainer = () => {
+    if (taskContainer.childElementCount === 0) {
+      taskContainer.remove();
+      boardContainer.innerHTML = `<p class="board__no-tasks"> Congratulations, all tasks were completed! To create a new click on «add new task» button.</p>`;
+    }
+  };
   task.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
     taskContainer.replaceChild(taskEdit.getElement(), task.getElement());
     document.addEventListener(`keydown`, onEscKeyDown);
+  });
+  taskEdit.getElement().querySelector(`.card__delete`).addEventListener(`click`, () => {
+    utils.unrender(taskEdit.getElement());
+    taskEdit._element = null;
+    checkEmptyContainer();
   });
   taskEdit.getElement().querySelector(`textarea`).addEventListener(`focus`, () => {
     document.removeEventListener(`keydown`, onEscKeyDown);
@@ -55,8 +66,9 @@ render(`.main__search`, filter(filterData));
 render(`.main__filter`, board());
 render(`.board`, boardFilter(), `beforeend`);
 render(`.board`, boardTasks(), `beforeend`);
-const taskContainer = document.querySelector(`.board__tasks`);
 render(`.board__tasks`, button());
+const taskContainer = document.querySelector(`.board__tasks`);
+const boardContainer = document.querySelector(`.board`);
 taskMocks.forEach((task) => {
   renderTask(task);
 });

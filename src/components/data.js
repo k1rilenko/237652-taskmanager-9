@@ -38,5 +38,5 @@ const maketask = () => {
 for (let i = 0; i < 27; i++) {
   allTasks.push(maketask());
 } */
-const taskMocks = new Array(10).fill(``).map(maketask);
+const taskMocks = new Array(1).fill(``).map(maketask);
 export {taskMocks};
