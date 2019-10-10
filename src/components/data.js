@@ -34,8 +34,9 @@ const maketask = () => {
     isArchive: Boolean(Math.round(Math.random()))
   };
 };
-const allTasks = [];
+/* const allTasks = [];
 for (let i = 0; i < 27; i++) {
   allTasks.push(maketask());
-}
-export {allTasks};
+} */
+const taskMocks = new Array(10).fill(``).map(maketask);
+export {taskMocks};
