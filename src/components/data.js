@@ -5,7 +5,7 @@ const maketask = () => {
       `Сделать домашку`,
       `Пройти интенсив на соточку`
     ][Math.floor(Math.random() * 3)],
-    dueDate: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 100,
+    dueDate: Date.now() + 1 + Math.floor(Math.random() * 7 * 24 * 60 * 60 * 100),
     tags: new Set([
       `homework`,
       `theory`,
