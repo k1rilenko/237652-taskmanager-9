@@ -1,5 +1,7 @@
-export const menu = () => {
-  return `<section class="control__btn-wrap">
+import {AbstractComponent} from './abstractComponent.js';
+export class Menu extends AbstractComponent {
+  getTemplate() {
+    return `<section class="control__btn-wrap">
     <input
       type="radio"
       name="control"
@@ -27,4 +29,6 @@ export const menu = () => {
       >STATISTICS</label
     >
       </section>`;
-};
+  }
+}
+
