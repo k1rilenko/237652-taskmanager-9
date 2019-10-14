@@ -1,23 +1,27 @@
-import {menu} from './components/menu.js';
-import {search} from './components/search.js';
+import {Menu} from './components/menu.js';
+import {Search} from './components/search.js';
 import {filter} from './components/filter.js';
-import {card} from './components/card.js';
-import {board} from './components/board.js';
-import {boardFilter} from './components/boardFilter.js';
-import {boardTasks} from './components/boardTasks.js';
 import {button} from './components/button.js';
+import {taskMocks} from './components/data.js';
+import {filterData} from './components/filterData.js';
+import {utils} from './components/utils.js';
+import {BoardController} from './components/boardController.js';
 
-const render = (block, template, position = `afterend`) => {
-  const element = document.querySelector(block);
-  element.insertAdjacentHTML(position, template);
-};
-render(`.control__title`, menu());
-render(`.main__control`, search());
-render(`.main__search`, filter());
-render(`.main__filter`, board());
-render(`.board`, boardFilter(), `beforeend`);
-render(`.board`, boardTasks(), `beforeend`);
-for (let i = 0; i < 3; i++) {
-  render(`.board__tasks`, card(), `beforeend`);
-}
-render(`.board__tasks`, button());
+const TaskMockCopy = [...taskMocks];
+const menu = new Menu();
+const search = new Search();
+const menuContainer = document.querySelector(`.main__control`);
+const main = document.querySelector(`.main`);
+const boardController = new BoardController(main, TaskMockCopy);
+utils.render(menuContainer, menu.getElement(), utils.position.BEFOREEND);
+utils.render(main, search.getElement(), utils.position.BEFOREEND);
+utils.render(main, utils.createElement(filter(filterData)), utils.position.BEFOREEND);
+boardController.init();
+utils.render(boardController._board.getElement(), utils.createElement(button()), utils.position.BEFOREEND);
+const buttonLoad = document.querySelector(`.load-more`);
+buttonLoad.addEventListener(`click`, () => {
+  boardController.oneTimeRender();
+  if (boardController.oneTimeRender() === 0) {
+    buttonLoad.style = `display: none`;
+  }
+});

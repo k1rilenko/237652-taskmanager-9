@@ -1,6 +1,4 @@
-import {task} from './data.js';
-const {color, repeatingDays, description, dueDate, tags} = task;
-export const card = () => {
+export const card = ({color, repeatingDays, description, dueDate, tags}) => {
   return `<article class="card card--${color} ${Object.keys(repeatingDays).some((day) => repeatingDays[day]) ? `card--repeat` : `` }">
 <div class="card__form">
   <div class="card__inner">
