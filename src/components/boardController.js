@@ -1,9 +1,9 @@
 import {Board} from './board';
 import {TaskList} from './taskList';
 import {utils} from './utils';
-import {Task} from './task.js';
-import {TaskEdit} from './taskEdit.js';
-import {Sort} from './sort.js';
+import {TaskController} from './taskController';
+import {Sort} from './sort';
+import {MoreButton} from './button';
 
 export class BoardController {
   constructor(container, tasks) {
@@ -12,12 +12,17 @@ export class BoardController {
     this._board = new Board();
     this._taskList = new TaskList();
     this._sort = new Sort();
+    this._loadButton = new MoreButton();
+    this._subscription = [];
+    this._onDataChange = this._onDataChange.bind(this);
+    this._onChangeView = this._onChangeView.bind(this);
   }
   init() {
     utils.render(this._container, this._board.getElement(), utils.position.BEFOREEND);
     utils.render(this._board.getElement(), this._sort.getElement(), utils.position.AFTERBEGIN);
     utils.render(this._board.getElement(), this._taskList.getElement(), utils.position.BEFOREEND);
-    this.oneTimeRender(5);
+    this._tasks.forEach((taskMock) => this._renderTask(taskMock));
+    utils.render(this._board.getElement(), this._loadButton.getElement(), utils.position.BEFOREEND);
     this._sort.getElement().addEventListener(`click`, (evt) => this._onSortLinkClick(evt));
   }
   _onSortLinkClick(evt) {
@@ -41,39 +46,24 @@ export class BoardController {
     }
 
   }
-  oneTimeRender() {
-    const renderForOneTime = this._tasks.slice();
-    renderForOneTime.splice(0, 5).forEach((taskMock) => this._renderTask(taskMock));
-    return this._tasks.length;
+  _renderBoard(tasks) {
+    utils.unrender(this._taskList.getElement());
+    utils.unrender(this._loadButton.getElement());
+    this._taskList.removeElement();
+    this._loadButton.removeElement();
+    utils.render(this._board.getElement(), this._taskList.getElement(), utils.position.BEFOREEND);
+    tasks.forEach((taskMock) => this._renderTask(taskMock));
+    utils.render(this._board.getElement(), this._loadButton.getElement(), utils.position.BEFOREEND);
   }
   _renderTask(task) {
-    const taskComponent = new Task(task);
-    const taskEditComponent = new TaskEdit(task);
-    const onEscKeyDown = (e) => {
-      if (e.key === `Escape` || e.key === `Esc`) {
-        this._taskList.getElement().replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
-    taskComponent.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
-      this._taskList.getElement().replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-    taskEditComponent.getElement().querySelector(`.card__delete`).addEventListener(`click`, () => {
-      utils.unrender(taskEditComponent.getElement());
-      taskEditComponent._element = null;
-      /* checkEmptyContainer(); */
-    });
-    taskEditComponent.getElement().querySelector(`textarea`).addEventListener(`focus`, () => {
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    });
-    taskEditComponent.getElement().querySelector(`textarea`).addEventListener(`blur`, () => {
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-    taskEditComponent.getElement().querySelector(`.card__save`).addEventListener(`click`, () => {
-      this._taskList.getElement().replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    });
-    utils.render(this._taskList.getElement(), taskComponent.getElement(), utils.position.BEFOREEND);
+    const taskController = new TaskController(this._taskList, task, this._onDataChange, this._onChangeView);
+    this._subscription.push(taskController.setDefaultView.bind(taskController));
+  }
+  _onDataChange(newData, oldData) {
+    this._tasks[this._tasks.findIndex((it) => it === oldData)] = newData;
+    this._renderBoard(this._tasks);
+  }
+  _onChangeView() {
+    this._subscription.forEach((it) => it());
   }
 }

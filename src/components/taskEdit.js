@@ -8,6 +8,7 @@ export class TaskEdit extends AbstractComponent {
     this._repeatingDays = repeatingDays;
     this._color = color;
     this._element = null;
+    this._subsribeOnEvents();
   }
   getTemplate() {
     return `<article class="card card--edit card--${this._color} ${Object.keys(this._repeatingDays).some((day) => this._repeatingDays[day]) ? `card--repeat` : ``}">
@@ -43,7 +44,7 @@ export class TaskEdit extends AbstractComponent {
 
                       <fieldset class="card__date-deadline">
                         <label class="card__input-deadline-wrap">
-                          <input class="card__date" type="text" placeholder="" name="date" value="${new Date(this._dueDate).toLocaleTimeString()}">
+                          <input class="card__date" type="text" placeholder="" name="date" value="${new Date(this._dueDate)}">
                         </label>
                       </fieldset>
 
@@ -67,7 +68,7 @@ export class TaskEdit extends AbstractComponent {
                       ${Array.from(this._tags).map((tag) => {
     return `
                         <span class="card__hashtag-inner">
-                        <input type="hidden" name="hashtag" value="repeat" class="card__hashtag-hidden-input">
+                        <input type="hidden" name="hashtag" value="${tag}" class="card__hashtag-hidden-input">
                         <p class="card__hashtag-name">
                           #${tag}
                         </p>
@@ -77,10 +78,10 @@ export class TaskEdit extends AbstractComponent {
                       </span>
                         `;
   }).join(``)}
-                      <label>
-                        <input type="text" class="card__hashtag-input" name="hashtag-input" placeholder="Type new hashtag here">
-                      </label>
                     </div>
+                    <label>
+                    <input type="text" class="card__hashtag-input" name="hashtag-input" placeholder="Type new hashtag here">
+                  </label>
                   </div>
 
                   <div class="card__colors-inner">
@@ -105,7 +106,24 @@ export class TaskEdit extends AbstractComponent {
                 </div>
               </div>
             </form>
-          </article>
-  `;
+          </article>`;
+  }
+  _subsribeOnEvents() {
+    this.getElement().querySelector(`.card__hashtag-input`).addEventListener(`keydown`, (evt) => {
+      if (evt.key === `Enter`) {
+        evt.preventDefault();
+        this.getElement().querySelector(`.card__hashtag-list`).insertAdjacentHTML(`beforeend`, `
+        <span class="card__hashtag-inner">
+          <input type="hidden" name="hashtag" value="${evt.target.value}" class="card__hashtag-hidden-input">
+          <p class="card__hashtag-name">
+            #${evt.target.value}
+          </p>
+          <button type="button" class="card__hashtag-delete">
+            delete
+          </button>
+        </span>`);
+        evt.target.value = ``;
+      }
+    });
   }
 }
