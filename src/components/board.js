@@ -1,4 +1,8 @@
-export const board = () => {
-  return `<section class="board container">
-  </section>`;
-};
+import {AbstractComponent} from './abstractComponent.js';
+
+export class Board extends AbstractComponent {
+  getTemplate() {
+    return `<section class="board container">
+    </section>`;
+  }
+}
