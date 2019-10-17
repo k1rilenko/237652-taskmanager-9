@@ -1,4 +1,7 @@
 import {AbstractComponent} from './abstractComponent.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/light.css';
 export class TaskEdit extends AbstractComponent {
   constructor({color, repeatingDays, description, dueDate, tags}) {
     super();
@@ -9,6 +12,7 @@ export class TaskEdit extends AbstractComponent {
     this._color = color;
     this._element = null;
     this._subsribeOnEvents();
+    this._initFlatpickr();
   }
   getTemplate() {
     return `<article class="card card--edit card--${this._color} ${Object.keys(this._repeatingDays).some((day) => this._repeatingDays[day]) ? `card--repeat` : ``}">
@@ -107,6 +111,13 @@ export class TaskEdit extends AbstractComponent {
               </div>
             </form>
           </article>`;
+  }
+  _initFlatpickr() {
+    flatpickr(this.getElement().querySelector(`.card__date`), {
+      altInput: true,
+      allowInput: true,
+      defaultDate: this._dueDate
+    });
   }
   _subsribeOnEvents() {
     this.getElement().querySelector(`.card__hashtag-input`).addEventListener(`keydown`, (evt) => {
